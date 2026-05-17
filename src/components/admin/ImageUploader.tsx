@@ -24,6 +24,12 @@ export default function ImageUploader({ value, onChange, label = "Image" }: Prop
       return;
     }
 
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!validTypes.includes(file.type)) {
+      toast.error("Only JPG, PNG, WebP, and GIF files are allowed");
+      return;
+    }
+
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
@@ -36,7 +42,8 @@ export default function ImageUploader({ value, onChange, label = "Image" }: Prop
       const data = await res.json();
       if (data.url) {
         onChange(data.url);
-        toast.success("Image uploaded successfully");
+        const sizeKB = data.bytes ? Math.round(data.bytes / 1024) : "?";
+        toast.success(`Image uploaded & optimized (${sizeKB} KB, ${data.format?.toUpperCase() || "auto"})`);
       } else {
         toast.error(data.error || "Upload failed");
       }

@@ -1,7 +1,16 @@
-import { type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
+function hasValidSupabaseConfig() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  return !!url && !!key && !url.includes("placeholder") && !key.includes("placeholder");
+}
+
 export async function proxy(request: NextRequest) {
+  if (!hasValidSupabaseConfig()) {
+    return NextResponse.next();
+  }
   return await updateSession(request);
 }
 

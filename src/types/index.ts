@@ -67,7 +67,19 @@ export interface Announcement {
   id: string;
   title: string;
   content: string;
+  priority: string;
   is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface NoticeBoard {
+  id: string;
+  title: string;
+  description: string;
+  pdf_url: string;
+  is_important: boolean;
+  expiry_date: string;
   created_at?: string;
   updated_at?: string;
 }

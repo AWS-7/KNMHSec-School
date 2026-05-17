@@ -167,6 +167,7 @@ CREATE TABLE IF NOT EXISTS announcements (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
   content TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'Medium',
   is_active BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -203,6 +204,37 @@ CREATE POLICY "Allow public read" ON contact_details
   FOR SELECT USING (true);
 
 CREATE POLICY "Allow admin write" ON contact_details
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM auth.users WHERE auth.users.id = auth.uid())
+  ) WITH CHECK (
+    EXISTS (SELECT 1 FROM auth.users WHERE auth.users.id = auth.uid())
+  );
+
+-- ============================================================
+-- ADD priority COLUMN TO announcements (if migrating existing)
+-- ============================================================
+ALTER TABLE announcements ADD COLUMN IF NOT EXISTS priority TEXT NOT NULL DEFAULT 'Medium';
+
+-- ============================================================
+-- NOTICE BOARD
+-- ============================================================
+CREATE TABLE IF NOT EXISTS notice_board (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  pdf_url TEXT,
+  is_important BOOLEAN NOT NULL DEFAULT false,
+  expiry_date DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE notice_board ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public read" ON notice_board
+  FOR SELECT USING (true);
+
+CREATE POLICY "Allow admin write" ON notice_board
   FOR ALL USING (
     EXISTS (SELECT 1 FROM auth.users WHERE auth.users.id = auth.uid())
   ) WITH CHECK (

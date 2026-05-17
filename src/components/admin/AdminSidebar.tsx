@@ -12,6 +12,7 @@ import {
   Building2,
   Trophy,
   Megaphone,
+  ClipboardList,
   Phone,
   LogOut,
   Menu,
@@ -29,16 +30,22 @@ const navItems = [
   { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },
   { href: "/admin/achievements", label: "Achievements", icon: Trophy },
   { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
+  { href: "/admin/notices", label: "Notices", icon: ClipboardList },
   { href: "/admin/contact", label: "Contact", icon: Phone },
 ];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const supabase = createClient();
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch {
+      // Supabase not configured — clear fallback cookie
+    }
+    document.cookie = "admin-session=; path=/; max-age=0";
     window.location.href = "/admin/login";
   };
 

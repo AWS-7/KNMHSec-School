@@ -18,9 +18,20 @@ export async function POST(request: Request) {
     const result = await cloudinary.uploader.upload(dataURI, {
       folder: "school-website",
       resource_type: "image",
+      quality_analysis: true,
     });
 
-    return NextResponse.json({ url: result.secure_url, public_id: result.public_id });
+    // Build optimized delivery URL with automatic format & quality
+    const baseUrl = result.secure_url.replace(/\/upload\/v\d+\//, "/upload/");
+    const optimizedUrl = `${baseUrl.replace("/upload/", "/upload/q_auto,f_auto/")}`;
+
+    return NextResponse.json({
+      url: optimizedUrl,
+      original_url: result.secure_url,
+      public_id: result.public_id,
+      format: result.format,
+      bytes: result.bytes,
+    });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

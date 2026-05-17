@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Crimson_Pro } from "next/font/google";
 import { Toaster } from "sonner";
+import LoadingScreen from "@/components/public/LoadingScreen";
 import "./globals.css";
 
 const inter = Inter({
@@ -40,6 +41,7 @@ export default function RootLayout({
       className={`${inter.variable} ${crimsonPro.variable} antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
+        <LoadingScreen />
         {children}
         <Toaster position="top-right" richColors />
       </body>
