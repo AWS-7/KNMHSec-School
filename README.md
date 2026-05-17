@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chatriya Nadar Matriculation Higher Secondary School Website
 
-## Getting Started
+A modern, professional, and production-ready school website built with Next.js, Supabase, and Cloudinary.
 
-First, run the development server:
+## Tech Stack
+
+- **Frontend:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Framer Motion
+- **Backend:** Supabase (PostgreSQL + Auth)
+- **Images:** Cloudinary
+- **Icons:** Lucide React
+- **Toasts:** Sonner
+
+## Features
+
+### Public Website
+- Responsive single-page layout with smooth scroll navigation
+- Hero, About, Academics, Facilities, Gallery, Achievements, Admissions, and Contact sections
+- Framer Motion animations (subtle and professional)
+- SEO-optimized metadata
+- Lazy-loaded images with Next.js Image component
+
+### Admin Dashboard
+- Secure login via Supabase Auth
+- Sidebar navigation with protected routes
+- Content management for all website sections
+- Image upload to Cloudinary with direct URL storage in Supabase
+- Clean card-based UI with form validation and toast notifications
+
+## Project Structure
+
+```
+src/
+  app/
+    page.tsx              # Public homepage
+    layout.tsx            # Root layout with fonts & metadata
+    globals.css           # Tailwind v4 theme & custom colors
+    admin/
+      layout.tsx          # Admin layout with sidebar
+      login/page.tsx      # Admin login
+      dashboard/page.tsx  # Admin overview
+      hero/page.tsx       # Manage hero section
+      about/page.tsx      # Manage about section
+      academics/page.tsx  # Manage academic levels
+      facilities/page.tsx # Manage facilities
+      gallery/page.tsx    # Manage gallery images
+      achievements/page.tsx # Manage achievements
+      announcements/page.tsx # Manage announcements
+      contact/page.tsx    # Manage contact details
+    api/upload/route.ts   # Cloudinary upload API
+  components/
+    public/               # Public website sections
+    admin/                # Admin reusable components
+  lib/
+    data.ts               # Server-side data fetching
+    supabase/             # Client & server Supabase clients
+    cloudinary.ts         # Cloudinary SDK config
+  types/
+    index.ts              # TypeScript types
+```
+
+## Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
+
+## Database Setup
+
+1. Create a new Supabase project.
+2. Go to the SQL Editor and run the contents of `supabase-schema.sql`.
+3. Enable Email provider in Authentication > Providers (no confirmation required for admin-only use).
+4. Create an admin user manually via Supabase Auth dashboard or invite.
+
+## Cloudinary Setup
+
+1. Create a Cloudinary account.
+2. Note your Cloud Name, API Key, and API Secret from the Dashboard.
+3. Add these to your `.env.local`.
+
+## Running Locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```  
+```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) for the public site.
+Open [http://localhost:3000/admin/login](http://localhost:3000/admin/login) for the admin panel.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Vercel (Frontend)
+1. Push your code to GitHub.
+2. Import the project into [Vercel](https://vercel.com).
+3. Add all environment variables from `.env.local` in Project Settings > Environment Variables.
+4. Deploy.
 
-## Learn More
+### Supabase (Backend)
+Already hosted on Supabase. Ensure Row Level Security policies are active and your project URL + anon key are configured in Vercel env vars.
 
-To learn more about Next.js, take a look at the following resources:
+### Cloudinary (Images)
+Already hosted on Cloudinary. Images are uploaded to the `school-website` folder.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Row Level Security
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+All content tables have RLS enabled:
+- **Public read:** Anyone can read (for the website)
+- **Admin write:** Only authenticated users can write (protected by middleware)
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Proprietary - Chatriya Nadar Matriculation Higher Secondary School
