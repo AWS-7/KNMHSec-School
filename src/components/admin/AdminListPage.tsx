@@ -76,7 +76,13 @@ export default function AdminListPage({
     }
     const toInsert = items.map((item) => {
       const { id, ...rest } = item;
-      return rest;
+      const cleaned: Record<string, any> = {};
+      for (const [key, value] of Object.entries(rest)) {
+        if (value === "true") cleaned[key] = true;
+        else if (value === "false") cleaned[key] = false;
+        else cleaned[key] = value;
+      }
+      return cleaned;
     });
     const { error: insErr } = await supabase.from(table).insert(toInsert);
     if (insErr) toast.error(insErr.message);
