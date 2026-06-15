@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary";
 
 export async function POST(request: Request) {
+  const hasCloudinary =
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET;
+
+  if (!hasCloudinary) {
+    return NextResponse.json(
+      { error: "Image upload is not configured. Add Cloudinary credentials to .env.local." },
+      { status: 503 }
+    );
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;

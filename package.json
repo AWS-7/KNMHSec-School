@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:env": "node deploy/check-env.js",
+    "deploy:prepare": "npm run build && mkdir -p .next/standalone/.next logs && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.3",

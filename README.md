@@ -98,7 +98,25 @@ Open [http://localhost:3000/admin/login](http://localhost:3000/admin/login) for 
 
 ## Deployment
 
-### Vercel (Frontend)
+### Hostinger VPS (recommended for self-hosting)
+
+Public site and admin panel deploy together as one app. See **[deploy/DEPLOY.md](deploy/DEPLOY.md)** for the full guide.
+
+Quick overview:
+
+1. [VPS purchase checklist](deploy/VPS_PURCHASE_CHECKLIST.md) — buy Hostinger VPS
+2. [Supabase setup](deploy/SUPABASE_SETUP.md) — required
+3. Copy [`.env.example`](.env.example) → `.env.local` (Supabase keys; Cloudinary optional)
+4. On VPS: `sudo bash deploy/full-vps-deploy.sh YOUR_VPS_IP`
+
+From Windows: [deploy/FROM_WINDOWS.md](deploy/FROM_WINDOWS.md)
+
+| Page | URL |
+|------|-----|
+| Public website | `http://YOUR_VPS_IP/` |
+| Admin login | `http://YOUR_VPS_IP/admin/login` |
+
+### Vercel (alternative)
 1. Push your code to GitHub.
 2. Import the project into [Vercel](https://vercel.com).
 3. Add all environment variables from `.env.local` in Project Settings > Environment Variables.
