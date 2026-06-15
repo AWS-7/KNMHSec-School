@@ -7,6 +7,7 @@ import AcademicsSection from "@/components/public/AcademicsSection";
 import FacilitiesSection from "@/components/public/FacilitiesSection";
 import GallerySection from "@/components/public/GallerySection";
 import AchievementsSection from "@/components/public/AchievementsSection";
+import ReviewsSection from "@/components/public/ReviewsSection";
 import NoticeBoard from "@/components/public/NoticeBoard";
 import AdmissionsSection from "@/components/public/AdmissionsSection";
 import ContactSection from "@/components/public/ContactSection";
@@ -50,6 +51,7 @@ export default async function HomePage() {
         <FacilitiesSection data={facilities} />
         <GallerySection data={gallery} />
         <AchievementsSection data={achievements} />
+        <ReviewsSection />
         <NoticeBoard data={notices} />
         <AdmissionsSection />
         <ContactSection data={contact} />

@@ -34,55 +34,52 @@ export default function HeroSection({ data }: Props) {
   return (
     <section
       id="home"
-      className="relative flex min-h-[72vh] items-center overflow-hidden bg-primary text-primary-foreground sm:min-h-[85vh]"
+      className="relative flex min-h-[68vh] items-end overflow-hidden bg-primary text-primary-foreground sm:min-h-[80vh] sm:items-center lg:min-h-[85vh]"
     >
-      {/* Background */}
       <div className="absolute inset-0">
         {data?.banner_image_url ? (
           <Image
             src={data.banner_image_url}
             alt="School campus"
             fill
-            className="object-cover"
+            className="object-cover object-center"
             priority
           />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-primary via-[#183554] to-[#0b1729]" />
         )}
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-primary/60 to-primary/20" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(197,160,89,0.12),transparent_55%)]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#08111d]/95 via-[#112640]/75 to-[#112640]/40 sm:bg-gradient-to-r sm:from-black/80 sm:via-primary/65 sm:to-primary/25" />
 
-      {/* Content */}
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-24 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="max-w-3xl text-center lg:text-left"
         >
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm backdrop-blur-sm lg:mx-0">
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm lg:mx-0">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
             <span className="font-medium text-white/90">Kamuthi, Tamil Nadu</span>
           </div>
 
-          <h1 className="mt-6 font-serif text-5xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl">
+          <h1 className="mt-4 font-serif text-[1.65rem] font-semibold leading-[1.15] tracking-tight text-white text-balance sm:mt-6 sm:text-5xl sm:leading-[1.08] lg:text-7xl">
             {heroTitle}
           </h1>
 
-          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8 lg:mx-0">
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/85 line-clamp-3 sm:mt-5 sm:text-lg sm:leading-8 sm:line-clamp-none lg:mx-0">
             {heroSubtitle}
           </p>
 
-          <p className="mx-auto mt-3 max-w-xl text-sm italic text-secondary sm:text-base lg:mx-0">
+          <p className="mx-auto mt-2 max-w-xl text-xs italic text-secondary sm:mt-3 sm:text-base lg:mx-0">
             &ldquo;{heroTagline}&rdquo;
           </p>
 
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+          <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:justify-center sm:gap-3 lg:justify-start">
             <button
               type="button"
               onClick={() => scrollToSection("facilities")}
-              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-secondary px-6 text-sm font-semibold text-secondary-foreground shadow-lg transition-colors hover:bg-secondary/90 sm:w-auto"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground shadow-lg sm:w-auto sm:px-6"
             >
               {data?.cta_primary || "Explore Campus"}
               <ArrowRight className="h-4 w-4" aria-hidden />
@@ -90,20 +87,20 @@ export default function HeroSection({ data }: Props) {
             <button
               type="button"
               onClick={() => scrollToSection("contact")}
-              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/25 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/15 sm:w-auto"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/25 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-sm sm:w-auto sm:px-6"
             >
               {data?.cta_secondary || "Contact School"}
             </button>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+          <div className="mt-6 -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 lg:justify-start">
             {trustChips.map(({ icon: Icon, label }, index) => (
               <motion.span
                 key={label}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.15 + index * 0.1 }}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-sm text-white/85 backdrop-blur-sm"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm"
               >
                 <Icon className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
                 {label}

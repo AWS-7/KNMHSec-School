@@ -11,6 +11,7 @@ import {
   Mic,
 } from "lucide-react";
 import type { Facility } from "@/types";
+import DualRowScrollStrip from "./DualRowScrollStrip";
 
 interface Props {
   data: Facility[];
@@ -36,18 +37,34 @@ const iconComponents: Record<string, React.ReactNode> = {
   Mic: <Mic className="h-6 w-6" />,
 };
 
+function FacilityCard({ facility }: { facility: Facility }) {
+  return (
+    <div className="h-full rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+      <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+        {iconComponents[facility.icon_name] || <Monitor className="h-6 w-6" />}
+      </div>
+      <h3 className="font-serif text-lg font-semibold text-foreground mb-1.5">
+        {facility.title}
+      </h3>
+      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+        {facility.description}
+      </p>
+    </div>
+  );
+}
+
 export default function FacilitiesSection({ data }: Props) {
   const facilities = data.length > 0 ? data : defaultFacilities;
 
   return (
-    <section id="facilities" className="py-20 sm:py-28 bg-background">
+    <section id="facilities" className="py-20 sm:py-28 bg-background overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <span className="text-sm font-semibold uppercase tracking-wider text-secondary">
             Facilities
@@ -58,30 +75,16 @@ export default function FacilitiesSection({ data }: Props) {
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
             State-of-the-art facilities designed to support academic excellence, physical development, and creative expression.
           </p>
+          <p className="mt-2 text-xs text-muted-foreground/80">
+            Swipe sideways to explore · Auto-scrolls continuously
+          </p>
         </motion.div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {facilities.map((facility, index) => (
-            <motion.div
-              key={facility.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="rounded-xl border border-border bg-card p-6 transition-all hover:border-secondary/50 hover:shadow-sm"
-            >
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
-                {iconComponents[facility.icon_name] || <Monitor className="h-6 w-6" />}
-              </div>
-              <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
-                {facility.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {facility.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+        <DualRowScrollStrip
+          items={facilities}
+          getKey={(f) => f.id}
+          renderCard={(facility) => <FacilityCard facility={facility} />}
+        />
       </div>
     </section>
   );
