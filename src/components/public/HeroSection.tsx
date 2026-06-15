@@ -2,7 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Award, BookOpen, GraduationCap, Languages, MapPin, Shield, Trophy, Users } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  GraduationCap,
+  Languages,
+  MapPin,
+  Shield,
+  Trophy,
+  Users,
+} from "lucide-react";
 import Image from "next/image";
 import type { GalleryImage, HeroSection as HeroSectionType } from "@/types";
 
@@ -30,7 +42,7 @@ function TrustChip({
   label: string;
 }) {
   return (
-    <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm">
+    <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm">
       <Icon className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
       {label}
     </span>
@@ -51,7 +63,7 @@ function HeroTrustMarquee() {
   );
 }
 
-function HeroMobileCarousel({
+function HeroCarousel({
   images,
   bannerUrl,
 }: {
@@ -75,15 +87,23 @@ function HeroMobileCarousel({
     return () => clearInterval(timer);
   }, [slides.length]);
 
+  const goPrev = () => {
+    setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  const goNext = () => {
+    setIndex((prev) => (prev + 1) % slides.length);
+  };
+
   if (slides.length === 0) {
     return (
-      <div className="relative mb-4 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/15 bg-white/10 md:hidden" />
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 bg-white/10 sm:rounded-2xl lg:aspect-[5/6] lg:max-h-[520px]" />
     );
   }
 
   return (
-    <div className="relative mb-4 md:hidden">
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 shadow-lg sm:rounded-2xl">
+    <div className="relative w-full">
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 shadow-xl sm:rounded-2xl lg:aspect-[5/6] lg:max-h-[520px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={slides[index].url}
@@ -99,13 +119,36 @@ function HeroMobileCarousel({
               fill
               className="object-cover"
               priority={index === 0}
+              sizes="(max-width: 1024px) 100vw, 520px"
             />
           </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent lg:from-black/25" />
+
+        {slides.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={goPrev}
+              aria-label="Previous slide"
+              className="absolute left-3 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/30 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/50 sm:inline-flex"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              aria-label="Next slide"
+              className="absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/20 bg-black/30 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/50 sm:inline-flex"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </>
+        )}
       </div>
+
       {slides.length > 1 && (
-        <div className="mt-2 flex justify-center gap-1.5">
+        <div className="mt-3 flex justify-center gap-1.5">
           {slides.map((slide, i) => (
             <button
               key={slide.url}
@@ -147,88 +190,84 @@ export default function HeroSection({ data, galleryImages = [] }: Props) {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-primary text-primary-foreground sm:flex sm:min-h-[80vh] sm:items-center lg:min-h-[85vh]"
+      className="relative overflow-hidden bg-primary text-primary-foreground"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#183554] to-[#0b1729] sm:hidden" />
-      <div className="absolute inset-0 hidden sm:block">
-        {data?.banner_image_url ? (
-          <Image
-            src={data.banner_image_url}
-            alt="School campus"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-primary via-[#183554] to-[#0b1729]" />
-        )}
-      </div>
-      <div className="absolute inset-0 hidden bg-gradient-to-r from-black/80 via-primary/65 to-primary/25 sm:block" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#183554] to-[#0b1729]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(197,160,89,0.14),transparent_50%)]" />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl text-center lg:text-left"
-        >
-          <HeroMobileCarousel
-            images={carouselImages}
-            bannerUrl={data?.banner_image_url}
-          />
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 xl:gap-14">
+          {/* Carousel — top on mobile/tablet, right on desktop */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="order-1 w-full lg:order-2 lg:justify-self-end lg:max-w-[520px]"
+          >
+            <HeroCarousel
+              images={carouselImages}
+              bannerUrl={data?.banner_image_url}
+            />
+          </motion.div>
 
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm lg:mx-0">
-            <MapPin className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
-            <span className="font-medium text-white/90 sm:text-white/90">
-              Kamuthi, Tamil Nadu
-            </span>
-          </div>
+          {/* Content — below carousel on mobile, left on desktop */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="order-2 text-center lg:order-1 lg:text-left"
+          >
+            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm lg:mx-0">
+              <MapPin className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
+              <span className="font-medium text-white/90">Kamuthi, Tamil Nadu</span>
+            </div>
 
-          <h1 className="mt-4 font-serif text-[1.65rem] font-semibold leading-[1.15] tracking-tight text-white text-balance sm:mt-6 sm:text-5xl sm:leading-[1.08] lg:text-7xl">
-            {heroTitle}
-          </h1>
+            <h1 className="mt-4 font-serif text-[1.65rem] font-semibold leading-[1.15] tracking-tight text-white text-balance sm:mt-5 sm:text-4xl sm:leading-[1.1] lg:text-6xl xl:text-7xl">
+              {heroTitle}
+            </h1>
 
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/85 line-clamp-3 sm:mt-5 sm:text-lg sm:leading-8 sm:line-clamp-none lg:mx-0">
-            {heroSubtitle}
-          </p>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/85 line-clamp-3 sm:mt-4 sm:text-base sm:leading-7 lg:mx-0 lg:text-lg lg:leading-8 lg:line-clamp-none">
+              {heroSubtitle}
+            </p>
 
-          <p className="mx-auto mt-2 max-w-xl text-xs italic text-secondary sm:mt-3 sm:text-base lg:mx-0">
-            &ldquo;{heroTagline}&rdquo;
-          </p>
+            <p className="mx-auto mt-2 max-w-xl text-xs italic text-secondary sm:mt-3 sm:text-base lg:mx-0">
+              &ldquo;{heroTagline}&rdquo;
+            </p>
 
-          <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:justify-center sm:gap-3 lg:justify-start">
-            <button
-              type="button"
-              onClick={() => scrollToSection("facilities")}
-              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground shadow-lg sm:w-auto sm:px-6"
-            >
-              {data?.cta_primary || "Explore Campus"}
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToSection("contact")}
-              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/25 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-sm sm:w-auto sm:px-6"
-            >
-              {data?.cta_secondary || "Contact School"}
-            </button>
-          </div>
-
-          <div className="mt-6 hidden flex-wrap items-center justify-center gap-2 sm:flex lg:justify-start">
-            {trustChips.map(({ icon, label }, index) => (
-              <motion.span
-                key={label}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 + index * 0.08 }}
+            <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:justify-center sm:gap-3 lg:justify-start">
+              <button
+                type="button"
+                onClick={() => scrollToSection("facilities")}
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground shadow-lg sm:w-auto sm:px-6"
               >
-                <TrustChip icon={icon} label={label} />
-              </motion.span>
-            ))}
-          </div>
+                {data?.cta_primary || "Explore Campus"}
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection("contact")}
+                className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/25 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-sm sm:w-auto sm:px-6"
+              >
+                {data?.cta_secondary || "Contact School"}
+              </button>
+            </div>
 
-          <HeroTrustMarquee />
-        </motion.div>
+            <div className="mt-6 hidden flex-wrap items-center justify-center gap-2 sm:flex lg:justify-start">
+              {trustChips.map(({ icon, label }, index) => (
+                <motion.span
+                  key={label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.15 + index * 0.08 }}
+                >
+                  <TrustChip icon={icon} label={label} />
+                </motion.span>
+              ))}
+            </div>
+
+            <HeroTrustMarquee />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
