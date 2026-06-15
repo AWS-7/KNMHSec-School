@@ -53,7 +53,7 @@ function HeroTrustMarquee() {
   const loopChips = [...trustChips, ...trustChips];
 
   return (
-    <div className="mt-6 -mx-4 overflow-hidden touch-pan-y sm:hidden">
+    <div className="mt-5 w-full overflow-hidden touch-pan-y sm:hidden">
       <div className="flex w-max gap-2 py-1 [animation:marquee-left_22s_linear_infinite]">
         {loopChips.map((chip, index) => (
           <TrustChip key={`${chip.label}-${index}`} icon={chip.icon} label={chip.label} />
@@ -195,14 +195,13 @@ export default function HeroSection({ data, galleryImages = [] }: Props) {
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#183554] to-[#0b1729]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(197,160,89,0.14),transparent_50%)]" />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
-        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 xl:gap-14">
-          {/* Carousel — top on mobile/tablet, right on desktop */}
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-8 pt-3 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <div className="flex flex-col gap-6 sm:gap-8 lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center lg:gap-10 xl:gap-14">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="order-1 w-full lg:order-2 lg:justify-self-end lg:max-w-[520px]"
+            className="order-1 w-full shrink-0 lg:order-2 lg:justify-self-end lg:max-w-[520px]"
           >
             <HeroCarousel
               images={carouselImages}
@@ -210,31 +209,30 @@ export default function HeroSection({ data, galleryImages = [] }: Props) {
             />
           </motion.div>
 
-          {/* Content — below carousel on mobile, left on desktop */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="order-2 text-center lg:order-1 lg:text-left"
+            className="order-2 flex w-full flex-col items-start text-left lg:order-1 lg:max-w-3xl"
           >
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm lg:mx-0">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm">
               <MapPin className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
               <span className="font-medium text-white/90">Kamuthi, Tamil Nadu</span>
             </div>
 
-            <h1 className="mt-4 font-serif text-[1.65rem] font-semibold leading-[1.15] tracking-tight text-white text-balance sm:mt-5 sm:text-4xl sm:leading-[1.1] lg:text-6xl xl:text-7xl">
+            <h1 className="mt-3 w-full font-serif text-[1.5rem] font-semibold leading-[1.2] tracking-tight text-white sm:mt-4 sm:text-4xl sm:leading-[1.1] lg:text-6xl xl:text-7xl">
               {heroTitle}
             </h1>
 
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/85 line-clamp-3 sm:mt-4 sm:text-base sm:leading-7 lg:mx-0 lg:text-lg lg:leading-8 lg:line-clamp-none">
+            <p className="mt-3 w-full text-sm leading-6 text-white/85 sm:mt-4 sm:text-base sm:leading-7 lg:text-lg lg:leading-8">
               {heroSubtitle}
             </p>
 
-            <p className="mx-auto mt-2 max-w-xl text-xs italic text-secondary sm:mt-3 sm:text-base lg:mx-0">
+            <p className="mt-2 w-full text-xs italic text-secondary sm:mt-3 sm:text-base">
               &ldquo;{heroTagline}&rdquo;
             </p>
 
-            <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:justify-center sm:gap-3 lg:justify-start">
+            <div className="mt-5 flex w-full flex-col gap-2.5 sm:mt-8 sm:w-auto sm:flex-row sm:gap-3">
               <button
                 type="button"
                 onClick={() => scrollToSection("facilities")}
@@ -252,7 +250,7 @@ export default function HeroSection({ data, galleryImages = [] }: Props) {
               </button>
             </div>
 
-            <div className="mt-6 hidden flex-wrap items-center justify-center gap-2 sm:flex lg:justify-start">
+            <div className="mt-5 hidden w-full flex-wrap items-start gap-2 sm:flex lg:justify-start">
               {trustChips.map(({ icon, label }, index) => (
                 <motion.span
                   key={label}
