@@ -25,6 +25,7 @@ function ScrollRow<T>({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
   const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const loopItems = [...items, ...items];
 
@@ -71,13 +72,28 @@ function ScrollRow<T>({
     };
   }, []);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartRef.current.x);
+    const dy = Math.abs(touch.clientY - touchStartRef.current.y);
+    if (dx > dy && dx > 8) {
+      pauseBriefly();
+    }
+  };
+
   return (
     <div
       ref={scrollRef}
-      className="overflow-x-auto scrollbar-hide touch-pan-x cursor-grab active:cursor-grabbing"
+      className="overflow-x-auto scrollbar-hide overscroll-x-contain touch-pan-y"
       onScroll={pauseBriefly}
-      onTouchStart={pauseBriefly}
-      onMouseDown={pauseBriefly}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -106,7 +122,7 @@ export default function DualRowScrollStrip<T>({
   const rowTwoItems = rowTwo.length > 0 ? rowTwo : rowOne;
 
   return (
-    <div className="space-y-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
+    <div className="space-y-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 touch-pan-y">
       <ScrollRow
         items={rowOne}
         getKey={getKey}

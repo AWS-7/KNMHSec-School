@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
-import DualRowScrollStrip from "./DualRowScrollStrip";
+import AutoScrollStrip from "./AutoScrollStrip";
 
 interface Review {
   id: string;
@@ -10,6 +10,7 @@ interface Review {
   role: string;
   text: string;
   rating: number;
+  important?: boolean;
 }
 
 const defaultReviews: Review[] = [
@@ -19,6 +20,7 @@ const defaultReviews: Review[] = [
     role: "Parent of Class X Student",
     text: "Our child has grown in confidence and discipline. The teachers genuinely care about every student's progress and well-being.",
     rating: 5,
+    important: true,
   },
   {
     id: "2",
@@ -26,6 +28,7 @@ const defaultReviews: Review[] = [
     role: "Parent of Class VIII Student",
     text: "Excellent academic environment with strong values. The school balances studies, sports, and character building very well.",
     rating: 5,
+    important: true,
   },
   {
     id: "3",
@@ -40,6 +43,7 @@ const defaultReviews: Review[] = [
     role: "Parent of Class XII Student",
     text: "Board exam preparation and guidance from teachers helped our daughter achieve strong results. Highly recommended school.",
     rating: 5,
+    important: true,
   },
   {
     id: "5",
@@ -54,12 +58,22 @@ const defaultReviews: Review[] = [
     role: "Parent of Class VII Student",
     text: "Good infrastructure, transport facility, and a nurturing atmosphere. Chatriya Nadar School truly focuses on overall development.",
     rating: 5,
+    important: true,
   },
 ];
 
-function ReviewCard({ review }: { review: Review }) {
+function ReviewCard({ review, featured }: { review: Review; featured?: boolean }) {
   return (
-    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 shadow-sm">
+    <div
+      className={`flex h-full flex-col rounded-xl border bg-card p-5 shadow-sm ${
+        featured ? "border-secondary/40 ring-1 ring-secondary/20" : "border-border"
+      }`}
+    >
+      {featured && (
+        <span className="mb-2 inline-flex w-fit rounded-full bg-secondary/15 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-secondary">
+          Featured
+        </span>
+      )}
       <Quote className="h-8 w-8 text-secondary/40 mb-3" aria-hidden />
       <p className="flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-4">
         &ldquo;{review.text}&rdquo;
@@ -78,6 +92,8 @@ function ReviewCard({ review }: { review: Review }) {
 }
 
 export default function ReviewsSection() {
+  const importantReviews = defaultReviews.filter((r) => r.important);
+
   return (
     <section id="reviews" className="py-20 sm:py-28 bg-muted overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -95,18 +111,17 @@ export default function ReviewsSection() {
             What Parents Say
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-            Trusted by families across Kamuthi for quality education and caring guidance.
+            Featured feedback from parents who trust Chatriya Nadar Matriculation HSS.
           </p>
           <p className="mt-2 text-xs text-muted-foreground/80">
-            Swipe sideways to read more · Auto-scrolls continuously
+            Auto-scrolls continuously
           </p>
         </motion.div>
 
-        <DualRowScrollStrip
-          items={defaultReviews}
+        <AutoScrollStrip
+          items={importantReviews}
           getKey={(r) => r.id}
-          renderCard={(review) => <ReviewCard review={review} />}
-          cardClassName="w-[300px] shrink-0 sm:w-[320px]"
+          renderCard={(review) => <ReviewCard review={review} featured />}
         />
       </div>
     </section>

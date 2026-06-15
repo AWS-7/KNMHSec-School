@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Award, BookOpen, GraduationCap, MapPin } from "lucide-react";
+import { ArrowRight, Award, BookOpen, GraduationCap, Languages, MapPin, Shield, Trophy, Users } from "lucide-react";
 import Image from "next/image";
 import type { GalleryImage, HeroSection as HeroSectionType } from "@/types";
 
@@ -15,7 +15,41 @@ const trustChips = [
   { icon: GraduationCap, label: "Pre-KG to XII" },
   { icon: BookOpen, label: "Holistic Learning" },
   { icon: Award, label: "Future Ready" },
+  { icon: Shield, label: "Safe Campus" },
+  { icon: Users, label: "Expert Faculty" },
+  { icon: Trophy, label: "Sports & Arts" },
+  { icon: Languages, label: "English Focus" },
+  { icon: MapPin, label: "Kamuthi, Ramanathapuram" },
 ];
+
+function TrustChip({
+  icon: Icon,
+  label,
+}: {
+  icon: typeof GraduationCap;
+  label: string;
+}) {
+  return (
+    <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm">
+      <Icon className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
+      {label}
+    </span>
+  );
+}
+
+function HeroTrustMarquee() {
+  const loopChips = [...trustChips, ...trustChips];
+
+  return (
+    <div className="mt-6 -mx-4 overflow-hidden touch-pan-y sm:hidden">
+      <div className="flex w-max gap-2 py-1 [animation:marquee-left_22s_linear_infinite]">
+        {loopChips.map((chip, index) => (
+          <TrustChip key={`${chip.label}-${index}`} icon={chip.icon} label={chip.label} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function HeroMobileCarousel({
   images,
@@ -180,20 +214,20 @@ export default function HeroSection({ data, galleryImages = [] }: Props) {
             </button>
           </div>
 
-          <div className="mt-6 -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 lg:justify-start">
-            {trustChips.map(({ icon: Icon, label }, index) => (
+          <div className="mt-6 hidden flex-wrap items-center justify-center gap-2 sm:flex lg:justify-start">
+            {trustChips.map(({ icon, label }, index) => (
               <motion.span
                 key={label}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 + index * 0.1 }}
-                className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm sm:px-4 sm:py-2 sm:text-sm"
+                transition={{ duration: 0.5, delay: 0.15 + index * 0.08 }}
               >
-                <Icon className="h-3.5 w-3.5 shrink-0 text-secondary" aria-hidden />
-                {label}
+                <TrustChip icon={icon} label={label} />
               </motion.span>
             ))}
           </div>
+
+          <HeroTrustMarquee />
         </motion.div>
       </div>
     </section>
