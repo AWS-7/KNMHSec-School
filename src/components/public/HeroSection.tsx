@@ -49,7 +49,7 @@ function HeroMobileCarousel({
 
   return (
     <div className="relative mb-4 md:hidden">
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/15 shadow-lg">
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/15 shadow-lg sm:rounded-2xl">
         <AnimatePresence mode="wait">
           <motion.div
             key={slides[index].url}
@@ -113,7 +113,7 @@ export default function HeroSection({ data, galleryImages = [] }: Props) {
   return (
     <section
       id="home"
-      className="relative flex min-h-[68vh] items-end overflow-hidden bg-primary text-primary-foreground sm:min-h-[80vh] sm:items-center lg:min-h-[85vh]"
+      className="relative overflow-hidden bg-primary text-primary-foreground sm:flex sm:min-h-[80vh] sm:items-center lg:min-h-[85vh]"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#183554] to-[#0b1729] sm:hidden" />
       <div className="absolute inset-0 hidden sm:block">
@@ -131,7 +131,7 @@ export default function HeroSection({ data, galleryImages = [] }: Props) {
       </div>
       <div className="absolute inset-0 hidden bg-gradient-to-r from-black/80 via-primary/65 to-primary/25 sm:block" />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 pb-10 pt-24 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-8 pt-4 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
