@@ -139,6 +139,16 @@ export default function Footer() {
             Admin Login
           </Link>
         </div>
+
+        <p className="mt-4 text-center text-xs text-primary-foreground/50">
+          Developed by AWS — Agni Web Solutions —{" "}
+          <a
+            href="tel:9080700642"
+            className="hover:text-secondary transition-colors"
+          >
+            9080700642
+          </a>
+        </p>
       </div>
     </footer>
   );
