@@ -44,7 +44,7 @@ export default async function HomePage() {
       <Navbar />
       <AnnouncementsTicker data={announcements} />
       <main>
-        <HeroSection data={hero} />
+        <HeroSection data={hero} galleryImages={gallery} />
         <LatestAnnouncements data={announcements} />
         <AboutSection data={about} />
         <AcademicsSection data={academics} />
